@@ -1,18 +1,19 @@
-using System.Reflection.Metadata.Ecma335;
-using ClienteApi.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
+using ClientesApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using ClientesApi.DTOs;
 using ClientesApi.Results;
+using Microsoft.AspNetCore.Authorization;
+using ClientesApi.Interfaces;
+
 namespace ClientesApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ClientesController : ControllerBase
 {
-    private readonly ClienteService _clienteService;
-
-    public ClientesController(ClienteService clienteService)
+    private readonly IClienteService _clienteService;
+    public ClientesController( IClienteService clienteService)
     {
         _clienteService = clienteService;
     }
@@ -85,10 +86,10 @@ public class ClientesController : ControllerBase
     }
 
     //endpoint POST /api/clientes/{idOrigem}/transferencia
-     [HttpPost("{idOrigem}/transferencia")]
+    [HttpPost("{idOrigem}/transferencia")]
     public IActionResult Transferir(
-      int idOrigem,
-      TransferenciaRequest request)
+     int idOrigem,
+     TransferenciaRequest request)
     {
         if (!ModelState.IsValid)
         {

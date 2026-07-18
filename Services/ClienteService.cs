@@ -2,20 +2,24 @@ using ClientesApi.Data;
 using ClientesApi.Models;
 using ClientesApi.DTOs;
 using ClientesApi.Results;
+using ClientesApi.Interfaces;
 
 
-namespace ClienteApi.Services;
+namespace ClientesApi.Services;
 
-public class ClienteService
+
+public class ClienteService : IClienteService
 {
     public List<Cliente> ObterTodos()
     {
         return Database.Clientes;
     }
+
     public Cliente? ObterPorId(int id)
     {
         return Database.Clientes.FirstOrDefault(c => c.Id == id);
     }
+
 
     public Cliente Criar(ClienteCreateRequest request)
     {
@@ -39,7 +43,7 @@ public class ClienteService
     public Cliente? AtualizarSaldo(int id, AtualizarSaldoRequest request)
     {
         var cliente = Database.Clientes
-        .FirstOrDefault(c => c.Id == id);
+            .FirstOrDefault(c => c.Id == id);
 
         if (cliente == null)
             return null;
@@ -48,10 +52,9 @@ public class ClienteService
 
         return cliente;
     }
-
     public TransferenciaResult Transferir(
-     int idOrigem,
-     TransferenciaRequest request)
+        int idOrigem,
+        TransferenciaRequest request)
     {
         var origem = Database.Clientes
             .FirstOrDefault(c => c.Id == idOrigem);
@@ -94,4 +97,5 @@ public class ClienteService
             Destino = destino
         };
     }
+
 }
